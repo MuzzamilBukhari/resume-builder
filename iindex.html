@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Interactive Resume</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="resume">
+      <h1>Resume</h1>
+      <section class="personal-info" id="personal-info-section">
+        <h2>Personal Information</h2>
+        <img
+          src="images/pic.jpg"
+          alt="Profile Picture"
+          id="profile-picture"
+          width="200px"
+          height="250px"
+        />
+        <p>Name: Muzzamil Bukhari</p>
+        <p>Contact: muzzi@gmail.com</p>
+      </section>
+      <button id="toggle-personal-info-btn">Toggle Personal Information</button>
+
+      <section class="education" id="education-section">
+        <h2>Education</h2>
+        <ul>
+          <li>Bachelor of Science in Computer Science, Karachi University</li>
+        </ul>
+      </section>
+      <button id="toggle-education-btn">Toggle Education</button>
+
+      <section class="skills" id="skills-section">
+        <h2>Skills</h2>
+        <ul>
+          <li>JavaScript</li>
+          <li>TypeScript</li>
+          <li>React</li>
+          <li>Next.js</li>
+        </ul>
+      </section>
+      <button id="toggle-skills-btn">Toggle Skills</button>
+
+      <section class="work-experience" id="work-experience-section">
+        <h2>Work Experience</h2>
+        <ul>
+          <li>Software Engineer, XYZ Company (2020 - Present)</li>
+        </ul>
+      </section>
+      <button id="toggle-work-experience-btn">Toggle Work Experience</button>
+    </div>
+
+    <script src="main.js"></script>
+  </body>
+</html>
