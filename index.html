@@ -3,52 +3,68 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Interactive Resume</title>
+    <title>Dynamic Resume Builder</title>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <div class="resume">
-      <h1>Resume</h1>
-      <section class="personal-info" id="personal-info-section">
-        <h2>Personal Information</h2>
-        <img
-          src="images/pic.jpg"
-          alt="Profile Picture"
-          id="profile-picture"
-          width="200px"
-          height="250px"
-        />
-        <p>Name: Muzzamil Bukhari</p>
-        <p>Contact: muzzi@gmail.com</p>
-      </section>
-      <button id="toggle-personal-info-btn">Toggle Personal Information</button>
+    <h1>Resume Builder</h1>
 
-      <section class="education" id="education-section">
-        <h2>Education</h2>
-        <ul>
-          <li>Bachelor of Science in Computer Science, Karachi University</li>
-        </ul>
-      </section>
-      <button id="toggle-education-btn">Toggle Education</button>
+    <!-- Resume Input Form -->
+    <form id="resume-form">
+      <h2>Personal Information</h2>
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name" required />
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" required />
 
-      <section class="skills" id="skills-section">
-        <h2>Skills</h2>
-        <ul>
-          <li>JavaScript</li>
-          <li>TypeScript</li>
-          <li>React</li>
-          <li>Next.js</li>
-        </ul>
-      </section>
-      <button id="toggle-skills-btn">Toggle Skills</button>
+      <h2>Education</h2>
+      <label for="education">Education:</label>
+      <input type="text" id="education" name="education" required />
 
-      <section class="work-experience" id="work-experience-section">
-        <h2>Work Experience</h2>
-        <ul>
-          <li>Software Engineer, XYZ Company (2020 - Present)</li>
-        </ul>
-      </section>
-      <button id="toggle-work-experience-btn">Toggle Work Experience</button>
+      <h2>Work Experience</h2>
+      <label for="work-experience">Work Experience:</label>
+      <input type="text" id="work-experience" name="work-experience" required />
+
+      <h2>Skills</h2>
+      <label for="skills">Skills (comma separated):</label>
+      <input type="text" id="skills" name="skills" required />
+
+      <button type="submit">Generate Resume</button>
+    </form>
+
+    <!-- Modal for Generated Resume -->
+    <div id="resume-modal" class="modal">
+      <div class="modal-content">
+        <span class="close-btn">&times;</span>
+        <div id="generated-resume">
+          <h2>Generated Resume</h2>
+
+          <section id="personal-info">
+            <h3>Personal Information</h3>
+            <p contenteditable="true">Name: <span id="display-name"></span></p>
+            <p contenteditable="true">
+              Email: <span id="display-email"></span>
+            </p>
+          </section>
+
+          <section id="display-education">
+            <h3>Education</h3>
+            <p contenteditable="true"><span id="education-content"></span></p>
+          </section>
+
+          <section id="display-work-experience">
+            <h3>Work Experience</h3>
+            <p contenteditable="true">
+              <span id="work-experience-content"></span>
+            </p>
+          </section>
+
+          <section id="display-skills">
+            <h3>Skills</h3>
+            <ul id="skills-list" contenteditable="true"></ul>
+          </section>
+        </div>
+      </div>
     </div>
 
     <script src="main.js"></script>
