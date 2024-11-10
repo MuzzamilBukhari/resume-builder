@@ -1,81 +1,134 @@
-// Get form elements
-const form = document.getElementById("resume-form") as HTMLFormElement;
-const nameInput = document.getElementById("name") as HTMLInputElement;
-const emailInput = document.getElementById("email") as HTMLInputElement;
-const educationInput = document.getElementById("education") as HTMLInputElement;
-const workExperienceInput = document.getElementById(
-  "work-experience"
-) as HTMLInputElement;
-const skillsInput = document.getElementById("skills") as HTMLInputElement;
+document
+  .getElementById("resumeform")
+  ?.addEventListener("submit", function (event) {
+    event.preventDefault();
 
-// Modal elements
-const modal = document.getElementById("resume-modal") as HTMLElement;
-const closeModalBtn = document.querySelector(".close-btn") as HTMLElement;
+    //get refference to form elements using threir Ids
+    const profilePictureInput = document.getElementById(
+      "profilePicture"
+    ) as HTMLInputElement;
 
-// Get display elements for the generated resume
-const displayName = document.getElementById("display-name") as HTMLElement;
-const displayEmail = document.getElementById("display-email") as HTMLElement;
-const educationContent = document.getElementById(
-  "education-content"
-) as HTMLElement;
-const workExperienceContent = document.getElementById(
-  "work-experience-content"
-) as HTMLElement;
-const skillsList = document.getElementById("skills-list") as HTMLElement;
+    const fullNameElement = document.getElementById(
+      "fullName"
+    ) as HTMLInputElement;
 
-// Handle form submission and resume generation
-form.addEventListener("submit", (event) => {
-  event.preventDefault(); // Prevent the form from submitting the traditional way
+    const emailElement = document.getElementById("email") as HTMLInputElement;
 
-  // Get values from the form
-  const name = nameInput.value;
-  const email = emailInput.value;
-  const education = educationInput.value;
-  const workExperience = workExperienceInput.value;
-  const skills = skillsInput.value.split(",").map((skill) => skill.trim());
+    const ageElement = document.getElementById("age") as HTMLInputElement;
 
-  // Populate the modal with the resume data
-  displayName.textContent = name;
-  displayEmail.textContent = email;
-  educationContent.textContent = education;
-  workExperienceContent.textContent = workExperience;
+    const addressElement = document.getElementById(
+      "address"
+    ) as HTMLInputElement;
 
-  // Clear the previous skills list and add new skills
-  skillsList.innerHTML = ""; // Clear previous skills
-  skills.forEach((skill) => {
-    const li = document.createElement("li");
-    li.textContent = skill;
-    skillsList.appendChild(li);
+    const phoneNumberElement = document.getElementById(
+      "phoneNumber"
+    ) as HTMLInputElement;
+
+    const educationElement = document.getElementById(
+      "education"
+    ) as HTMLInputElement;
+
+    const experienceElement = document.getElementById(
+      "experience"
+    ) as HTMLInputElement;
+
+    const skillsElement = document.getElementById("skills") as HTMLInputElement;
+
+    //check if all form element are present
+
+    if (
+      profilePictureInput &&
+      fullNameElement &&
+      emailElement &&
+      ageElement &&
+      addressElement &&
+      phoneNumberElement &&
+      educationElement &&
+      experienceElement &&
+      skillsElement
+    ) {
+      const fullName = fullNameElement.value;
+      const email = emailElement.value;
+      const age = ageElement.value;
+      const address = addressElement.value;
+      const phoneNumber = phoneNumberElement.value;
+      const education = educationElement.value;
+      const experience = experienceElement.value;
+      const skills = skillsElement.value;
+
+      //profile picture elements
+      const profilePictureFile = profilePictureInput.files?.[0];
+      const profilePictureURL = profilePictureFile
+        ? URL.createObjectURL(profilePictureFile)
+        : "";
+
+      //resume object
+      const resumeHTML = `
+<h2>Resume</h2>
+${
+  profilePictureURL
+    ? `<img src="${profilePictureURL}" alt="Profile Picture" class="profilePicture">`
+    : ""
+}
+<p><strong>FullName:${fullName}</p>
+<p><strong>Email:${email}</p>
+<p><strong>Age:</strong>${age}</p>
+<p><strong>Address:${address}</p>
+<p><strong>Phone Number:</strong>${phoneNumber}</p>
+
+<h3>Education:</h3>
+<p>${education}</p>
+
+<h3>Experience:</h3>
+<p>${experience}</p>
+
+<h3>Skills:</h3>
+<p>${skills}</p>
+`;
+
+      // resume output
+      const resumeOutputElement = document.getElementById("resumeOutput");
+      if (resumeOutputElement) {
+        resumeOutputElement.innerHTML = resumeHTML;
+        resumeOutputElement.classList.remove("hidden");
+
+        //create conatainer for buttons
+        const buttonContainer = document.createElement("div");
+        buttonContainer.id = "buttonContainer";
+        resumeOutputElement.appendChild(buttonContainer);
+
+        // add download pdf button
+        const downloadButton = document.createElement("button");
+        downloadButton.textContent = "Download as PDF";
+
+        downloadButton.addEventListener("click", () => {
+          window.print();
+        });
+        buttonContainer.appendChild(downloadButton);
+        // add shareable link button
+        const shareableLinkButton = document.createElement("button");
+        shareableLinkButton.textContent = "Copy Shareable Link";
+        shareableLinkButton.addEventListener("click", async () => {
+          try {
+            //create a unique shareable link
+            const shareableLink = `https://http://127.0.0.1:5500/resume/${fullName.replace(
+              /\s+/g,
+              "_"
+            )}_cv.html`;
+
+            //use clipboard API to copy the shareable link
+            await navigator.clipboard.writeText(shareableLink);
+            alert("shareable link to copied to clipboard");
+          } catch (err) {
+            console.error("failed to copy link:", err);
+            alert("failed to copy link to clipboard please try again.");
+          }
+        });
+        buttonContainer.appendChild(shareableLinkButton);
+      } else {
+        console.error("Resume output container no found");
+      }
+    } else {
+      console.log("form element are not found");
+    }
   });
-
-  // Show the modal
-  modal.style.display = "block";
-});
-
-// Close modal
-closeModalBtn.addEventListener("click", () => {
-  modal.style.display = "none";
-});
-
-// Event listeners to detect changes in the contenteditable fields
-const resumeFields = document.querySelectorAll('[contenteditable="true"]');
-
-resumeFields.forEach((field) => {
-  field.addEventListener("input", (event) => {
-    const target = event.target as HTMLElement;
-
-    // Save changes immediately when user edits the content
-    if (target.id === "display-name") {
-      nameInput.value = target.textContent || ""; // Update the form field
-    }
-    if (target.id === "display-email") {
-      emailInput.value = target.textContent || "";
-    }
-    if (target.id === "education-content") {
-      educationInput.value = target.textContent || "";
-    }
-    if (target.id === "work-experience-content") {
-      workExperienceInput.value = target.textContent || "";
-    }
-  });
-});
